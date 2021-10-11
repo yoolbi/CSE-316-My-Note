@@ -1,10 +1,11 @@
-import {/*useEffect,*/ useState} from 'react';
+import React, {/*useEffect,*/ useState} from 'react';
 import { nanoid } from 'nanoid';
 import NotesList from "./components/NotesList";
 import Search from "./components/Search";
 import SidebarHeader from "./components/SidebarHeader";
 import NotepageHeader from "./components/NotepageHeader";
 import AddNote from "./components/AddNote";
+import Profile from "./components/Profile";
 
 const App =  () => {
     const [notes, setNotes] = useState([
@@ -22,6 +23,7 @@ const App =  () => {
 
     const [searchText, setSearchText] = useState('');
     const [currentIndex, setCurrentIndex] = useState('');
+    const [showProfile, setShowProfile] = useState(false);
 
 
     // useEffect(() => {
@@ -58,14 +60,18 @@ const App =  () => {
         }
         const newNotes = [newNote, ...notes];
         setNotes(newNotes);
+        setCurrentIndex(newNotes[0].id);
     };
 
     const deleteNote = (id) => {
         const newNotes = notes.filter((note) => note.id !== id);
         setNotes(newNotes);
-        console.log("DELETE NOTE", notes, notes[0].id)
-        setCurrentIndex(notes[0].id);
-       console.log("DELETE NOTE", newNotes, id)
+        if(newNotes.length ===0) {
+            setCurrentIndex('');
+        }else {
+            setCurrentIndex(newNotes[0].id);
+        }
+       // console.log("DELETE NOTE", newNotes, id)
     };
 
     const getText = () => {
@@ -88,11 +94,19 @@ const App =  () => {
         setNotes(items);
     };
 
+    const handleShowProfile = (event) => {
+        setShowProfile({
+            showProfile : event
+        })
+    };
+
     return (
+        <React.Fragment>
         <div className='wrapper'>
             <div className='sidebar'>
                 <SidebarHeader
                     id = {currentIndex}
+                    handleShowProfile={handleShowProfile}
                     handleDeleteNote={deleteNote}
                 />
                 <Search handleSearchNote={setSearchText}/>
@@ -112,9 +126,11 @@ const App =  () => {
                 />
                 <AddNote text={getText()} setText={setText}/>
             </div>
-
-
         </div>
+        <Profile showProfile={showProfile}/>
+        </React.Fragment>
+
+
     );
 };
 

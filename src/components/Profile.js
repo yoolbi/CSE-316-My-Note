@@ -1,8 +1,8 @@
 import React from 'react';
 
-const Profile = () =>  {
+const Profile = ({showProfile}) =>  {
     return (
-        <div id="id01" className="modal" style={{display: 'block'}}>
+        <div id="id01" className="modal" style={{display: showProfile? 'block' : 'none'}}>
             <form className="modal-content" action="/action_page.php">
                 <div className="container">
                     <button type="button" onClick="document.getElementById('id01').style.display='none'"
