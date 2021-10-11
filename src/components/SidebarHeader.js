@@ -1,6 +1,5 @@
 import React from "react";
 import { MdDelete } from "react-icons/md";
-import Profile from "./Profile";
 
 const SidebarHeader = ({id, handleShowProfile, handleDeleteNote}) => {
     const handleProfileClick = () => {

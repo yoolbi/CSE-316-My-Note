@@ -71,12 +71,9 @@ const App =  () => {
         }else {
             setCurrentIndex(newNotes[0].id);
         }
-       // console.log("DELETE NOTE", newNotes, id)
     };
 
     const getText = () => {
-        let items = [...notes];
-        console.log("GETTING TEXT....",items,currentIndex)
         if (currentIndex.length === 0) {
             return '';
         } else if ((notes.filter((note) => note.id === currentIndex)[0].text === 'New Note')) {
@@ -127,10 +124,11 @@ const App =  () => {
                 <AddNote text={getText()} setText={setText}/>
             </div>
         </div>
-        <Profile showProfile={showProfile}/>
+        <Profile
+                 showProfile={showProfile}
+                 setShowProfile={setShowProfile}
+        />
         </React.Fragment>
-
-
     );
 };
 
