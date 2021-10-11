@@ -65,7 +65,7 @@ const App =  () => {
         setNotes(newNotes);
         console.log("DELETE NOTE", notes, notes[0].id)
         setCurrentIndex(notes[0].id);
-       // console.log("DELETE NOTE", newNotes, id)
+       console.log("DELETE NOTE", newNotes, id)
     };
 
     const getText = () => {
