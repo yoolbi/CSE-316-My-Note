@@ -1,4 +1,5 @@
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import ReactMarkdown from 'react-markdown';
 
 const AddNote = ({ text, setText }) => {
     const [noteText, setNoteText] = useState(text);
@@ -13,11 +14,13 @@ const AddNote = ({ text, setText }) => {
     }, [text]);
 
     return(
-        <div className="note new">
+        <div className="notenew">
             <textarea
+                className='textarea'
                 value={noteText}
                 onChange = {handleChange}
             ></textarea>
+            <ReactMarkdown className='markdown' children={noteText} />
         </div>
     );
 }
