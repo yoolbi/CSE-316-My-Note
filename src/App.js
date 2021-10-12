@@ -1,4 +1,4 @@
-import React, {/*useEffect,*/ useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { nanoid } from 'nanoid';
 import NotesList from "./components/NotesList";
 import Search from "./components/Search";
@@ -25,23 +25,23 @@ const App =  () => {
     const [currentIndex, setCurrentIndex] = useState('');
     const [showProfile, setShowProfile] = useState(false);
 
+    //save localStorage
+    useEffect(() => {
+        const savedNotes = JSON.parse(
+            localStorage.getItem('my-notes-data')
+        );
 
-    // useEffect(() => {
-    //     const savedNotes = JSON.parse(
-    //         localStorage.getItem('my-notes-data')
-    //     );
-    //
-    //     if(savedNotes) {
-    //         setNotes(savedNotes);
-    //     }
-    // }, [])
-    //
-    // useEffect(() => {
-    //     localStorage.setItem(
-    //         'my-notes-data',
-    //         JSON.stringify(notes)
-    //     );
-    // }, [notes])
+        if(savedNotes) {
+            setNotes(savedNotes);
+        }
+    }, [])
+
+    useEffect(() => {
+        localStorage.setItem(
+            'my-notes-data',
+            JSON.stringify(notes)
+        );
+    }, [notes])
 
     const getCurrentDate = () => {
         var date = new Date();

@@ -1,7 +1,33 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {MdClose} from 'react-icons/md';
 
 const Profile = ({showProfile, setShowProfile}) =>  {
+    const [profile, setProfile] = useState([
+        {
+            id: 0,
+            name: 'Yool Bi Lee',
+            email: 'yoolbi.lee@stonybrook.edu',
+            location: 'Songdo',
+        },
+    ]);
+
+    const onChangeName = (event) => {
+        setProfile({name: event.target.value});
+    };
+
+    const onChangeEmail = (event) => {
+        setProfile({email: event.target.value});
+    };
+
+    const onChangeLocation = (event) => {
+        setProfile({location: event.target.value});
+    };
+
+    const handleSave = () => {
+        localStorage.setItem('my-profile-data', JSON.stringify(profile));
+        setShowProfile(!showProfile);
+    };
+
     const handleClose = () => {
         setShowProfile(!showProfile);
     };
@@ -41,15 +67,15 @@ const Profile = ({showProfile, setShowProfile}) =>  {
                     </div>
                     <br/>
                     <label htmlFor="name"><b>Name</b></label>
-                    <input type="text" name="name" defaultValue="Yool Bi lee" required/>
+                    <input type="text" name="name" value={profile[0].name} onChange={onChangeName}/>
                     <br/>
                     <label htmlFor="email"><b>Email</b></label>
-                    <input type="text" name="email" defaultValue="yoolbi.lee@stonybrook.edu" required/>
+                    <input type="text" name="email" value={profile[0].email} onChange={onChangeEmail}/>
                     <br/>
                     <label htmlFor="location"><b>Location</b></label>
-                    <input type="text" name="psw-repeat" defaultValue="Songdo" required/>
+                    <input type="text" name="location" value={profile[0].location} onChange={onChangeLocation}/>
                     <div className="clearfix">
-                        <button type="button" onClick={handleClose}
+                        <button type="button" onClick={handleSave}
                                 className="save">Save
                         </button>
                         <button type="button" onClick={handleClose}
