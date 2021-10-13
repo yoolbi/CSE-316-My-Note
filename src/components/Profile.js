@@ -2,31 +2,44 @@ import React, {useEffect, useState, useRef} from 'react';
 import {MdClose} from 'react-icons/md';
 
 const Profile = ({showProfile, setShowProfile}) =>  {
-    const [profile, setProfile] = useState([
+    const [profile, setProfile] = useState(
         {
             id: 0,
             name: 'Yool Bi Lee',
             email: 'yoolbi.lee@stonybrook.edu',
             location: 'Songdo',
         },
-    ]);
+    );
 
-    const onChangeName = (event) => {
-        setProfile({name: event.target.value});
-    };
+    const { name, email, location } = profile;
 
-    const onChangeEmail = (event) => {
-        setProfile({email: event.target.value});
-    };
-
-    const onChangeLocation = (event) => {
-        setProfile({location: event.target.value});
+    const onChange = event => {
+        const { value, name } = event.target;
+        setProfile({
+            ...profile,
+            [name]: value
+        });
     };
 
     const handleSave = () => {
-        localStorage.setItem('my-profile-data', JSON.stringify(profile));
+        console.dir(profile);
+        localStorage.setItem(
+            'my-profile-data',
+            JSON.stringify(profile)
+        );
+
         setShowProfile(!showProfile);
     };
+
+    useEffect(() => {
+        const savedProfile = JSON.parse(
+            localStorage.getItem('my-profile-data')
+        );
+        console.dir(savedProfile);
+        if(savedProfile) {
+            setProfile(savedProfile);
+        }
+    }, [])
 
     const handleClose = () => {
         setShowProfile(!showProfile);
@@ -67,13 +80,13 @@ const Profile = ({showProfile, setShowProfile}) =>  {
                     </div>
                     <br/>
                     <label htmlFor="name"><b>Name</b></label>
-                    <input type="text" name="name" value={profile[0].name} onChange={onChangeName}/>
+                    <input type="text" name="name" value={name} onChange={onChange}/>
                     <br/>
                     <label htmlFor="email"><b>Email</b></label>
-                    <input type="text" name="email" value={profile[0].email} onChange={onChangeEmail}/>
+                    <input type="text" name="email" value={email} onChange={onChange}/>
                     <br/>
                     <label htmlFor="location"><b>Location</b></label>
-                    <input type="text" name="location" value={profile[0].location} onChange={onChangeLocation}/>
+                    <input type="text" name="location" value={location} onChange={onChange}/>
                     <div className="clearfix">
                         <button type="button" onClick={handleSave}
                                 className="save">Save
