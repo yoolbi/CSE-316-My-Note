@@ -92,7 +92,6 @@ input {
   .notenew {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    height: 100vh;
   }
 
   .textarea {
@@ -205,9 +204,11 @@ textarea:focus {
 }
 
 .noteTitle {
-  white-space: nowrap;
+  white-space: pre;
   text-overflow: ellipsis;
   overflow: hidden;
+  line-height: 1.2;
+  height: 1.2em;
 }
 
 .back-icons {
