@@ -1,6 +1,7 @@
 import Note from './Note';
 
-const NotesList = ({ notes, handleDeleteNote, currentIndex, setCurrentIndex }) => {
+const NotesList = (
+    { notes, handleDeleteNote, currentIndex, setCurrentIndex, handleShowSidebar, setShowSidebar, showSidebar}) => {
     return (
         <div className='notes-list'>
             {notes.map((note) => (
@@ -12,6 +13,9 @@ const NotesList = ({ notes, handleDeleteNote, currentIndex, setCurrentIndex }) =
                     handleDeleteNote={handleDeleteNote}
                     currentIndex={currentIndex}
                     setCurrentIndex={setCurrentIndex}
+                    handleShowSidebar={handleShowSidebar}
+                    setShowSidebar={setShowSidebar}
+                    showSidebar={showSidebar}
                 />
             ))}
         </div>

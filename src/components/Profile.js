@@ -22,7 +22,6 @@ const Profile = ({showProfile, setShowProfile}) =>  {
     };
 
     const handleSave = () => {
-        console.dir(profile);
         localStorage.setItem(
             'my-profile-data',
             JSON.stringify(profile)
@@ -35,7 +34,6 @@ const Profile = ({showProfile, setShowProfile}) =>  {
         const savedProfile = JSON.parse(
             localStorage.getItem('my-profile-data')
         );
-        console.dir(savedProfile);
         if(savedProfile) {
             setProfile(savedProfile);
         }

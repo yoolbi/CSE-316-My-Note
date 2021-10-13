@@ -1,9 +1,10 @@
 
-const Note = ({id, text, date, currentIndex, setCurrentIndex}) => {
+const Note = ({id, text, date, currentIndex, setCurrentIndex, handleShowSidebar, setShowSidebar, showSidebar}) => {
 
     const handleEditClick = (id) => {
         setCurrentIndex(id)
-
+        handleShowSidebar(false);
+        setShowSidebar(!showSidebar)
     };
 
     const checkIfCurrent = () => {

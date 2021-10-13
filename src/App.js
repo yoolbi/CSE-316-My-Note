@@ -6,6 +6,7 @@ import SidebarHeader from "./components/SidebarHeader";
 import NotepageHeader from "./components/NotepageHeader";
 import AddNote from "./components/AddNote";
 import Profile from "./components/Profile";
+import {useMediaQuery} from 'react-responsive';
 
 const App =  () => {
     const [notes, setNotes] = useState([
@@ -24,6 +25,7 @@ const App =  () => {
     const [searchText, setSearchText] = useState('');
     const [currentIndex, setCurrentIndex] = useState('');
     const [showProfile, setShowProfile] = useState(false);
+    const [showSidebar, setShowSidebar] = useState(false);
 
     //save localStorage
     useEffect(() => {
@@ -96,11 +98,19 @@ const App =  () => {
             showProfile : event
         })
     };
+    const isSmallScreen = useMediaQuery({ query: "(max-width: 500px)"});
+
+    const handleShowSidebar = (event) => {
+        setShowSidebar({
+            showSidebar : event
+        })
+    };
 
     return (
         <React.Fragment>
         <div className='wrapper'>
-            <div className='sidebar'>
+            <div className='sidebar'
+                 style={isSmallScreen? {display: showSidebar? 'block' : 'none'} : {display: 'block'}}>
                 <SidebarHeader
                     id = {currentIndex}
                     handleShowProfile={handleShowProfile}
@@ -114,12 +124,17 @@ const App =  () => {
                     handleDeleteNote={deleteNote}
                     currentIndex={currentIndex}
                     setCurrentIndex={setCurrentIndex}
+                    handleShowSidebar={handleShowSidebar}
+                    setShowSidebar={setShowSidebar}
+                    showSidebar={showSidebar}
                 />
             </div>
 
-            <div className='notepage'>
+            <div className='notepage'
+                 style={isSmallScreen? {display: showSidebar? 'none' : 'block'} : {display: 'block'}}>
                 <NotepageHeader
                     handleAddNote={addNote}
+                    handleShowSidebar={handleShowSidebar}
                 />
                 <AddNote text={getText()} setText={setText}/>
             </div>
