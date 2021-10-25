@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Note = ({notes, id, text, date, currentIndex, setCurrentIndex, handleShowSidebar, setShowSidebar, showSidebar, setNotes}) => {
+const Note = ({id, text, date, currentIndex, setCurrentIndex, handleShowSidebar, setShowSidebar, showSidebar}) => {
 
     const handleEditClick = (id) => {
         setCurrentIndex(id)

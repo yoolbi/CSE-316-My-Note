@@ -6,7 +6,7 @@ import NotepageHeader from "./components/NotepageHeader";
 import AddNote from "./components/AddNote";
 import Profile from "./components/Profile";
 import {useMediaQuery} from 'react-responsive';
-import {createNoteAPIMethod, deleteNoteByIdAPIMethod} from "./api/client";
+import {createNoteAPIMethod, deleteNoteByIdAPIMethod, getNotesAPIMethod, updateNoteAPIMethod} from "./api/client";
 
 const App =  () => {
     const [notes, setNotes] = useState([]);
@@ -15,73 +15,69 @@ const App =  () => {
     const [showProfile, setShowProfile] = useState(false);
     const [showSidebar, setShowSidebar] = useState(false);
 
-    //save localStorage
-    useEffect(() => {
-        const savedNotes = JSON.parse(
-            localStorage.getItem('my-notes-data')
-        );
+    // useEffect(() => {
+    //     updateNoteAPIMethod(notes).then ((response) => {
+    //         console.log(response);
+    //     })
+    // }, [notes])
 
-        if(savedNotes) {
-            setNotes(savedNotes);
-        }
-    }, [])
+    const getCurrentDate = () => {
+        var date = new Date();
+        var year = date.getFullYear().toString();
+        var month = (date.getMonth() + 1).toString();
+        var day = date.getDate().toString();
+        var hour = date.getHours().toString();
+        var minute = date.getMinutes().toString();
+        var second = date.getSeconds().toString();
+        var ap = date.getHours() < 12 ? 'AM':'PM';
+        return month + "/" + day + "/" + year + ", " + hour + ":" + minute + ":" + second + " " + ap;
+    };
 
-    useEffect(() => {
-        localStorage.setItem(
-            'my-notes-data',
-            JSON.stringify(notes)
-        );
-    }, [notes])
-
-    const addNote = (text) => {
-        var newNotes = {
+    const addNote = () => {
+        var newNote = {
             text: 'New Note',
-            lastUpdatedDate: Date.now(),
+            lastUpdatedDate: getCurrentDate(),
         }
-        createNoteAPIMethod(newNotes, (response) => {
+        createNoteAPIMethod(newNote).then ((response) => {
             console.log("Created the note on the server");
-            console.dir(response);
-        })
+            console.log(response);
+            setNotes([response,...notes])
+            setCurrentIndex(response._id);
+        });
+
     };
 
     const deleteNote = (id) => {
-        // const newNotes = notes.filter((note) => note.id !== id);
-        // setNotes(newNotes);
-        // if(newNotes.length ===0) {
-        //     setCurrentIndex('');
-        // }else {
-        //     setCurrentIndex(newNotes[0].id);
-        // }
-        deleteNoteByIdAPIMethod(id);
-        if(notes.length === 0) {
-            setCurrentIndex('');
-        } else {
-            setCurrentIndex(notes[0].id);
-        }
-        // const newNotes = deleteNoteByIdAPIMethod(id);
-        // setNotes(newNotes);
-        // if(newNotes.length ===0) {
-        //     setCurrentIndex('');
-        // }else {
-        //     setCurrentIndex(newNotes[0].id);
-        // }
+        deleteNoteByIdAPIMethod(id).then((response) => {
+            console.log("Deleted the author on the server");
+            console.log(response);
+
+        })
+        getNotesAPIMethod().then((notes) => {
+            if(notes.length ===0) {
+                setCurrentIndex('');
+            }else {
+                setCurrentIndex(notes[0]._id);
+            }
+            setNotes(notes);
+        })
     };
 
     const getText = () => {
         if (currentIndex.length === 0) {
             return '';
-        } else if ((notes.filter((note) => note.id === currentIndex)[0].text === 'New Note')) {
+        } else if ((notes.filter((note) => note._id === currentIndex)[0].text === 'New Note')) {
             return '';
         } else {
-            return notes.filter((note) => note.id === currentIndex)[0].text
+            return notes.filter((note) => note._id === currentIndex)[0].text
         }
     };
 
     const setText = (newText) => {
         let items = [...notes];
-        let item = items.filter((note) => note.id === currentIndex)[0]
+        let item = items.filter((note) => note._id === currentIndex)[0]
         item.text = newText;
-        item.date = Date.now();
+        item.lastUpdatedDate = getCurrentDate();
         setNotes(items);
     };
 

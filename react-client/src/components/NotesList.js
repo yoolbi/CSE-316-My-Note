@@ -10,23 +10,22 @@ const NotesList = (
             getNotesAPIMethod().then((notes) => {
                 setNotes(notes);
                 console.dir(notes);
-                // updateNoteAPIMethod(notes);
             }).catch((err) => {
                 console.error('Error retrieving note data: ' + err);
             });
         };
         fetchData();
-    }, []);
+    }, [setNotes]);
 
     return (
         <div className='notes-list'>
             {notes.map((note) => (
                 <Note
                     // notes={notes}
-                    id={note.id}
+                    id={note._id}
                     text={note.text}
                     date={note.lastUpdatedDate}
-                    key={note.id}
+                    key={note._id}
                     handleDeleteNote={handleDeleteNote}
                     currentIndex={currentIndex}
                     setCurrentIndex={setCurrentIndex}

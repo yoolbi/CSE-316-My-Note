@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 var NoteSchema = new Schema(
     {
         text: {type: String},
-        lastUpdatedDate: {type: Date, default: Date.now(), required: true},
+        lastUpdatedDate: {type: String, required: true},
     }
 );
 

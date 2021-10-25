@@ -11,14 +11,14 @@ if (!userArgs[0].startsWith('mongodb')) {
 }
 */
 var async = require('async')
-// var Note = require('./models/note')
-// var User = require('./models/user')
-var Note = mongoose.model('Note', NoteSchema);
-module.exports = Note;
-var User = mongoose.model('User', UserSchema);
-module.exports=User;
-
+var Note = require('./models/note')
+var User = require('./models/user')
 var mongoose = require('mongoose');
+// var Note = mongoose.model('Note', NoteSchema);
+// module.exports = Note;
+// var User = mongoose.model('User', UserSchema);
+// module.exports=User;
+
 var mongoDB = userArgs[0];
 mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.Promise = global.Promise;
@@ -64,13 +64,13 @@ function userCreate(name, email, location, cb) {
 function createNotes(cb) {
     async.parallel([
         function(callback) {
-            noteCreate('Some other note', 8/10/2021, callback)
+            noteCreate('Some other note', '8/26/2021, 10:42:56 AM', callback)
         },
         function(callback) {
-            noteCreate('# CSE 101', 9/10/2021, callback)
+            noteCreate('# CSE 101', '8/30/2021, 6:00:48 PM', callback)
         },
         function(callback) {
-            noteCreate('# CSE 316', 10/20/2021, callback)
+            noteCreate('# CSE 316', '9/26/2021, 2:36:34 PM', callback)
         }
         ],
         cb);

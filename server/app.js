@@ -125,7 +125,7 @@ app.get('/api/notes/:id', wrapAsync(async function (req,res, next) {
 
 app.delete('/api/notes/:id', wrapAsync(async function (req, res) {
     const id = req.params.id;
-    const result = await User.findByIdAndDelete(id);
+    const result = await Note.findByIdAndDelete(id);
     console.log("Deleted successfully: " + result);
     res.json(result);
 }));
@@ -135,7 +135,7 @@ app.put('/api/notes/:id', wrapAsync(async function (req, res) {
     console.log("PUT with id: " + id + ", body: " + JSON.stringify(req.body));
     // This below method automatically saves it to the database
     // findByIdAndUpdate by default does not run the validators, so we need to set the option to enable it.
-    await User.findByIdAndUpdate(id, {'text': req.body.text, "lastUpdatedDate": req.body.lastUpdatedDate},
+    await Note.findByIdAndUpdate(id, {'text': req.body.text, "lastUpdatedDate": req.body.lastUpdatedDate},
         {runValidators: true});
     // Status 204 represents success with no content
     // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/204
