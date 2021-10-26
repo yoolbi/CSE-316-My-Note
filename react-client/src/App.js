@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import NotesList from "./components/NotesList";
 import Search from "./components/Search";
 import SidebarHeader from "./components/SidebarHeader";
@@ -6,7 +6,7 @@ import NotepageHeader from "./components/NotepageHeader";
 import AddNote from "./components/AddNote";
 import Profile from "./components/Profile";
 import {useMediaQuery} from 'react-responsive';
-import {createNoteAPIMethod, deleteNoteByIdAPIMethod, getNotesAPIMethod, updateNoteAPIMethod} from "./api/client";
+import {createNoteAPIMethod, deleteNoteByIdAPIMethod, getNotesAPIMethod} from "./api/client";
 
 const App =  () => {
     const [notes, setNotes] = useState([]);
@@ -15,18 +15,12 @@ const App =  () => {
     const [showProfile, setShowProfile] = useState(false);
     const [showSidebar, setShowSidebar] = useState(false);
 
-    // useEffect(() => {
-    //     updateNoteAPIMethod(notes).then ((response) => {
-    //         console.log(response);
-    //     })
-    // }, [notes])
-
     const getCurrentDate = () => {
         var date = new Date();
         var year = date.getFullYear().toString();
         var month = (date.getMonth() + 1).toString();
         var day = date.getDate().toString();
-        var hour = date.getHours().toString();
+        var hour = (date.getHours().toString() % 12 || 12) ;
         var minute = date.getMinutes().toString();
         var second = date.getSeconds().toString();
         var ap = date.getHours() < 12 ? 'AM':'PM';
@@ -104,10 +98,9 @@ const App =  () => {
                     handleShowProfile={handleShowProfile}
                     handleDeleteNote={deleteNote}
                 />
-                <Search handleSearchNote=  {setSearchText}/>
+                <Search handleSearchNote={setSearchText}/>
                 <NotesList
                     notes={notes.filter((note)=>
-                        // note.text.toLowerCase().includes(searchText)
                         note.text.includes(searchText)
                     )}
                     handleDeleteNote={deleteNote}
@@ -126,7 +119,7 @@ const App =  () => {
                     handleAddNote={addNote}
                     handleShowSidebar={handleShowSidebar}
                 />
-                <AddNote text={getText()} setText={setText}/>
+                <AddNote text={getText()} setText={setText} notes={notes} setNotes={setNotes}/>
             </div>
         </div>
         <Profile

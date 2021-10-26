@@ -17,9 +17,11 @@ const NotesList = (
         fetchData();
     }, [setNotes]);
 
+    const sortedNotes = notes.sort((a,b) => Date.parse(b.lastUpdatedDate) - Date.parse(a.lastUpdatedDate));
+
     return (
         <div className='notes-list'>
-            {notes.map((note) => (
+            {sortedNotes.map((note) => (
                 <Note
                     // notes={notes}
                     id={note._id}
