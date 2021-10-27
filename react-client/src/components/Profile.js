@@ -4,8 +4,15 @@ import {getUsersAPIMethod, updateUserAPIMethod} from "../api/client";
 
 const Profile = ({showProfile, setShowProfile}) =>  {
     const [profile, setProfile] = useState([]);
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [location, setLocation] = useState('');
 
-    const { name, email, location } = profile;
+   useEffect(()=>{
+       setName(profile?.name);
+       setEmail(profile?.email);
+       setLocation(profile?.location);
+   }, [profile])
 
     const onChange = event => {
         const { value, name } = event.target;
@@ -15,33 +22,14 @@ const Profile = ({showProfile, setShowProfile}) =>  {
         });
     };
 
-     // useEffect(() => {
-     //    function fetchData() {
-     //        getUsersAPIMethod().then((res) => {
-     //            //  const {name,email,location} = res[0];
-     //            //  //console.log(name,email,location)
-     //            // setProfile({
-     //            //        /* name : name,
-     //            //     email:email,
-     //            //     location:location*/
-     //            //     profile : {name,email,location}
-     //            setProfile(res);
-     //            });
-     //             console.log(">>>",profile)
-     //           //console.dir(res[0]);
-     //        }).catch((err) => {
-     //            console.error('Error retrieving note data: ' + err);
-     //        });
-     //    };
-     //     fetchData();
-     // }, []);
-
     useEffect(() => {
         function fetchData() {
             getUsersAPIMethod().then((res) => {
-                setProfile(res);
-                console.dir(res);
-                console.dir(profile)
+                setProfile(res[0]);
+                // console.dir(res);
+                // console.dir(profile)
+                // setName[res.name];
+                print(res);
             }).catch((err) => {
                 console.error('Error retrieving note data: ' + err);
             });
@@ -49,6 +37,10 @@ const Profile = ({showProfile, setShowProfile}) =>  {
         fetchData();
     }, []);
 
+    const print =(res) => {
+        console.dir(res);
+        console.dir(profile)
+    }
     const handleSave = () => {
         updateUserAPIMethod(profile).then((response) => {
             console.log(response);
@@ -99,13 +91,13 @@ const Profile = ({showProfile, setShowProfile}) =>  {
                     </div>
                     <br/>
                     <label htmlFor="name"><b>Name</b></label>
-                    <input type="text" name="name" value={name} onChange={onChange}/>
+                    <input type="text" name="name" value={name||''} onChange={onChange}/>
                     <br/>
                     <label htmlFor="email"><b>Email</b></label>
-                    <input type="text" name="email" value={email} onChange={onChange}/>
+                    <input type="text" name="email" value={email||''} onChange={onChange}/>
                     <br/>
                     <label htmlFor="location"><b>Location</b></label>
-                    <input type="text" name="location" value={location} onChange={onChange}/>
+                    <input type="text" name="location" value={location||''} onChange={onChange}/>
                     <div className="clearfix">
                         <button type="button" onClick={handleSave}
                                 className="save">Save
