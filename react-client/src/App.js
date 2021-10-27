@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import NotesList from "./components/NotesList";
 import Search from "./components/Search";
 import SidebarHeader from "./components/SidebarHeader";
@@ -6,7 +6,7 @@ import NotepageHeader from "./components/NotepageHeader";
 import AddNote from "./components/AddNote";
 import Profile from "./components/Profile";
 import {useMediaQuery} from 'react-responsive';
-import {createNoteAPIMethod, deleteNoteByIdAPIMethod, getNotesAPIMethod} from "./api/client";
+import {createNoteAPIMethod, deleteNoteByIdAPIMethod, getNotesAPIMethod, updateNoteAPIMethod} from "./api/client";
 
 const App =  () => {
     const [notes, setNotes] = useState([]);
@@ -51,7 +51,7 @@ const App =  () => {
             if(notes.length ===0) {
                 setCurrentIndex('');
             }else {
-                setCurrentIndex(notes[0]._id);
+                setCurrentIndex(notes[notes.length - 1]._id);
             }
             setNotes(notes);
         })
@@ -73,7 +73,24 @@ const App =  () => {
         item.text = newText;
         item.lastUpdatedDate = getCurrentDate();
         setNotes(items);
+        saveNotesOnServer(item);
     };
+    //update note into db
+    function debounce(func, timeout = 1000){
+        let timer;
+        return (...args) => {
+            clearTimeout(timer);
+            timer = setTimeout(() => { func.apply(this, args); }, timeout);
+        };
+    }
+
+    const saveNotesOnServer = useCallback(debounce( (theNote) => {
+        updateNoteAPIMethod(theNote).then((res) => {
+            console.dir(res);
+        }).catch((err) => {
+            console.error('Error retrieving note data: ' + err);
+        });
+    }), []);
 
     const handleShowProfile = (event) => {
         setShowProfile({
@@ -98,7 +115,14 @@ const App =  () => {
                     handleShowProfile={handleShowProfile}
                     handleDeleteNote={deleteNote}
                 />
-                <Search handleSearchNote={setSearchText}/>
+                <Search handleSearchNote={setSearchText}
+                        searchText={searchText}
+                        setCurrentIndex={setCurrentIndex}
+                        notes={notes.filter((note)=>
+                            note.text.includes(searchText)
+                        )}
+
+                />
                 <NotesList
                     notes={notes.filter((note)=>
                         note.text.includes(searchText)
@@ -118,8 +142,11 @@ const App =  () => {
                 <NotepageHeader
                     handleAddNote={addNote}
                     handleShowSidebar={handleShowSidebar}
+                    setCurrentIndex={setCurrentIndex}
+                    searchText={searchText}
+                    setSearchText={setSearchText}
                 />
-                <AddNote text={getText()} setText={setText} notes={notes} setNotes={setNotes}/>
+                <AddNote text={getText()} setText={setText} notes={notes} currentIndex={currentIndex}/>
             </div>
         </div>
         <Profile
