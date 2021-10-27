@@ -103,7 +103,8 @@ app.use('/api/notes', (req, res, next) => {
 // Using an async function to be able to use the "await" functionality below, which makes
 // the find command run synchronously.
 app.get('/api/notes', wrapAsync(async function (req,res) {
-    const notes = await Note.find({});
+    const notes = await Note.find();
+    // const notes = await Note.find({}).sort({lastUpdatedDate: -1});
     res.json(notes);
 }));
 

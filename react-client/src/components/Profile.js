@@ -1,15 +1,9 @@
 import React, {useEffect, useState, useRef} from 'react';
 import {MdClose} from 'react-icons/md';
+import {getUsersAPIMethod, updateUserAPIMethod} from "../api/client";
 
 const Profile = ({showProfile, setShowProfile}) =>  {
-    const [profile, setProfile] = useState(
-        {
-            id: 0,
-            name: 'Yool Bi Lee',
-            email: 'yoolbi.lee@stonybrook.edu',
-            location: 'Songdo',
-        },
-    );
+    const [profile, setProfile] = useState([]);
 
     const { name, email, location } = profile;
 
@@ -21,23 +15,49 @@ const Profile = ({showProfile, setShowProfile}) =>  {
         });
     };
 
-    const handleSave = () => {
-        localStorage.setItem(
-            'my-profile-data',
-            JSON.stringify(profile)
-        );
-
-        setShowProfile(!showProfile);
-    };
+     // useEffect(() => {
+     //    function fetchData() {
+     //        getUsersAPIMethod().then((res) => {
+     //            //  const {name,email,location} = res[0];
+     //            //  //console.log(name,email,location)
+     //            // setProfile({
+     //            //        /* name : name,
+     //            //     email:email,
+     //            //     location:location*/
+     //            //     profile : {name,email,location}
+     //            setProfile(res);
+     //            });
+     //             console.log(">>>",profile)
+     //           //console.dir(res[0]);
+     //        }).catch((err) => {
+     //            console.error('Error retrieving note data: ' + err);
+     //        });
+     //    };
+     //     fetchData();
+     // }, []);
 
     useEffect(() => {
-        const savedProfile = JSON.parse(
-            localStorage.getItem('my-profile-data')
-        );
-        if(savedProfile) {
-            setProfile(savedProfile);
-        }
-    }, [])
+        function fetchData() {
+            getUsersAPIMethod().then((res) => {
+                setProfile(res);
+                console.dir(res);
+                console.dir(profile)
+            }).catch((err) => {
+                console.error('Error retrieving note data: ' + err);
+            });
+        };
+        fetchData();
+    }, []);
+
+    const handleSave = () => {
+        updateUserAPIMethod(profile).then((response) => {
+            console.log(response);
+            console.log("Updated the author on the server");
+        }).catch(err => {
+            console.error('Error updating author data: ' + err);
+        })
+        setShowProfile(!showProfile);
+    };
 
     const handleClose = () => {
         setShowProfile(!showProfile);
@@ -58,8 +78,9 @@ const Profile = ({showProfile, setShowProfile}) =>  {
     });
 
     return (
+
         <div id="id01" className="modal" style={{display: showProfile? 'block' : 'none'}}>
-            <form className="modal-content" action="/action_page.php">
+            <form className="modal-content" action="/action_page.php" profile={profile}>
                 <div className="container" ref={containerRef}>
                     <MdClose
                         className='close-icons'

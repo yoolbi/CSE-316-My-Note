@@ -90,7 +90,7 @@ const App =  () => {
         }).catch((err) => {
             console.error('Error retrieving note data: ' + err);
         });
-    }), []);
+    }),[]);
 
     const handleShowProfile = (event) => {
         setShowProfile({
@@ -121,7 +121,6 @@ const App =  () => {
                         notes={notes.filter((note)=>
                             note.text.includes(searchText)
                         )}
-
                 />
                 <NotesList
                     notes={notes.filter((note)=>
