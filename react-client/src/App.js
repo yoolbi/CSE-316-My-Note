@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import NotesList from "./components/NotesList";
 import Search from "./components/Search";
 import SidebarHeader from "./components/SidebarHeader";
@@ -105,6 +105,12 @@ const App =  () => {
         })
     };
 
+    const [searchFilteredNotes, setSearchFilteredNotes] = useState ([]);
+    useEffect(() => {
+        setSearchFilteredNotes(notes.filter((note)=>
+            note.text.includes(searchText)));
+    }, [notes, searchText]);
+
     return (
         <React.Fragment>
         <div className='wrapper'>
@@ -118,14 +124,11 @@ const App =  () => {
                 <Search handleSearchNote={setSearchText}
                         searchText={searchText}
                         setCurrentIndex={setCurrentIndex}
-                        notes={notes.filter((note)=>
-                            note.text.includes(searchText)
-                        )}
+                        notes={searchFilteredNotes}
+                        currentIndex={currentIndex}
                 />
                 <NotesList
-                    notes={notes.filter((note)=>
-                        note.text.includes(searchText)
-                    )}
+                    notes={searchFilteredNotes}
                     handleDeleteNote={deleteNote}
                     currentIndex={currentIndex}
                     setCurrentIndex={setCurrentIndex}
