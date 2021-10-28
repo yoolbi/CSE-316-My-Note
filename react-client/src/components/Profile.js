@@ -26,10 +26,6 @@ const Profile = ({showProfile, setShowProfile}) =>  {
         function fetchData() {
             getUsersAPIMethod().then((res) => {
                 setProfile(res[0]);
-                // console.dir(res);
-                // console.dir(profile)
-                // setName[res.name];
-                print(res);
             }).catch((err) => {
                 console.error('Error retrieving note data: ' + err);
             });
@@ -37,10 +33,6 @@ const Profile = ({showProfile, setShowProfile}) =>  {
         fetchData();
     }, []);
 
-    const print =(res) => {
-        console.dir(res);
-        console.dir(profile)
-    }
     const handleSave = () => {
         updateUserAPIMethod(profile).then((response) => {
             console.log(response);

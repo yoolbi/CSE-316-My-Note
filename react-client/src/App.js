@@ -144,7 +144,6 @@ const App =  () => {
                 <NotepageHeader
                     handleAddNote={addNote}
                     handleShowSidebar={handleShowSidebar}
-                    setCurrentIndex={setCurrentIndex}
                     searchText={searchText}
                     setSearchText={setSearchText}
                 />
