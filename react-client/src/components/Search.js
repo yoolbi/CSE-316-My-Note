@@ -3,12 +3,29 @@ import { MdSearch } from 'react-icons/md';
 
 const Search = ({ notes, handleSearchNote, searchText, setCurrentIndex, currentIndex }) => {
     useEffect(() => {
-            if (notes.length > 0) {
+        console.log(currentIndex, notes);
+        // no notes, return
+        if (notes.length === 0) {
+            return;
+        }
+        //if there is a search
+        if (searchText.length !== 0) {
+            //if nothing was selected, select the top note
+            if (currentIndex.length === 0) {
                 setCurrentIndex(notes[0]._id);
             }
-            if (searchText === '') {
-                setCurrentIndex(currentIndex);
+            //if note is selected and the selected note is in the filtered note, select the selected note
+            else {
+                let selectedIndex = 0;
+                for (let i = 0; i < notes.length; i++) {
+                    if (notes[i]._id === currentIndex) {
+                        selectedIndex = i;
+                    }
+                }
+                setCurrentIndex(notes[selectedIndex]._id);
             }
+        }
+
     }, [searchText, setCurrentIndex, notes, currentIndex]);
 
     return (
