@@ -7,6 +7,7 @@ import AddNote from "./components/AddNote";
 import Profile from "./components/Profile";
 import {useMediaQuery} from 'react-responsive';
 import {createNoteAPIMethod, deleteNoteByIdAPIMethod, getNotesAPIMethod, updateNoteAPIMethod} from "./api/client";
+import Login from "./components/Login";
 
 const App =  () => {
     const [notes, setNotes] = useState([]);
@@ -14,6 +15,8 @@ const App =  () => {
     const [currentIndex, setCurrentIndex] = useState('');
     const [showProfile, setShowProfile] = useState(false);
     const [showSidebar, setShowSidebar] = useState(false);
+    const [showNotes, setShowNotes] = useState(false);
+    const [showLogin, setShowLogin] = useState(true);
 
     const getCurrentDate = () => {
         var date = new Date();
@@ -105,6 +108,18 @@ const App =  () => {
         })
     };
 
+    const handleShowNotes = (event) => {
+        setShowNotes({
+            showNotes : event
+        })
+    };
+
+    const handleShowLogin = (event) => {
+        setShowLogin({
+            showLogin : event
+        })
+    };
+
     const [searchFilteredNotes, setSearchFilteredNotes] = useState ([]);
     useEffect(() => {
         setSearchFilteredNotes(notes.filter((note)=>
@@ -113,47 +128,56 @@ const App =  () => {
 
     return (
         <React.Fragment>
-        <div className='wrapper'>
-            <div className='sidebar'
-                 style={isSmallScreen? {display: showSidebar? 'block' : 'none'} : {display: 'block'}}>
-                <SidebarHeader
-                    id = {currentIndex}
-                    handleShowProfile={handleShowProfile}
-                    handleDeleteNote={deleteNote}
-                />
-                <Search handleSearchNote={setSearchText}
-                        searchText={searchText}
-                        setCurrentIndex={setCurrentIndex}
+            <div className='wrapper'
+                 style = {{display: showNotes? 'block' : 'none'}}
+            >
+                <div className='sidebar'
+                     style={isSmallScreen? {display: showSidebar? 'block' : 'none'} : {display: 'block'}}>
+                    <SidebarHeader
+                        id = {currentIndex}
+                        handleShowProfile={handleShowProfile}
+                        handleDeleteNote={deleteNote}
+                    />
+                    <Search handleSearchNote={setSearchText}
+                            searchText={searchText}
+                            setCurrentIndex={setCurrentIndex}
+                            notes={searchFilteredNotes}
+                            currentIndex={currentIndex}
+                    />
+                    <NotesList
                         notes={searchFilteredNotes}
+                        handleDeleteNote={deleteNote}
                         currentIndex={currentIndex}
-                />
-                <NotesList
-                    notes={searchFilteredNotes}
-                    handleDeleteNote={deleteNote}
-                    currentIndex={currentIndex}
-                    setCurrentIndex={setCurrentIndex}
-                    handleShowSidebar={handleShowSidebar}
-                    setShowSidebar={setShowSidebar}
-                    showSidebar={showSidebar}
-                    setNotes={setNotes}
+                        setCurrentIndex={setCurrentIndex}
+                        handleShowSidebar={handleShowSidebar}
+                        setShowSidebar={setShowSidebar}
+                        showSidebar={showSidebar}
+                        setNotes={setNotes}
+                    />
+                </div>
+
+                <div className='notepage'
+                     style={isSmallScreen? {display: showSidebar? 'none' : 'block'} : {display: 'block'}}>
+                    <NotepageHeader
+                        handleAddNote={addNote}
+                        handleShowSidebar={handleShowSidebar}
+                        searchText={searchText}
+                        setSearchText={setSearchText}
+                    />
+                    <AddNote text={getText()} setText={setText} notes={notes} currentIndex={currentIndex}/>
+                </div>
+            </div>
+            <Profile
+                showProfile={showProfile}
+                setShowProfile={setShowProfile}
+            />
+            <div style={{display: showLogin? 'block' : 'none'}}>
+                <Login
+                    handleShowNotes={handleShowNotes}
+                    handleShowLogin={handleShowLogin}
                 />
             </div>
 
-            <div className='notepage'
-                 style={isSmallScreen? {display: showSidebar? 'none' : 'block'} : {display: 'block'}}>
-                <NotepageHeader
-                    handleAddNote={addNote}
-                    handleShowSidebar={handleShowSidebar}
-                    searchText={searchText}
-                    setSearchText={setSearchText}
-                />
-                <AddNote text={getText()} setText={setText} notes={notes} currentIndex={currentIndex}/>
-            </div>
-        </div>
-        <Profile
-                 showProfile={showProfile}
-                 setShowProfile={setShowProfile}
-        />
         </React.Fragment>
     );
 };
