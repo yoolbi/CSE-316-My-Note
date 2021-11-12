@@ -121,11 +121,11 @@ const App =  () => {
     }, [notes, searchText]);
 
     // set current user
-    // useEffect(() => {
-    //     getCurrentUserAPIMethod().then((response) => {
-    //         setUser(response);
-    //     })
-    // });
+    useEffect(() => {
+        getCurrentUserAPIMethod().then((response) => {
+            setUser(response);
+        })
+    },[user]);
 
     if (!user) {
         return (
@@ -179,6 +179,8 @@ const App =  () => {
                 <Profile
                     showProfile={showProfile}
                     setShowProfile={setShowProfile}
+                    user={user}
+                    setUser={setUser}
                 />
             </React.Fragment>
         );

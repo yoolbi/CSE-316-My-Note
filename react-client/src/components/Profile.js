@@ -1,37 +1,27 @@
 import React, {useEffect, useState, useRef} from 'react';
 import {MdClose} from 'react-icons/md';
-import {getUsersAPIMethod, updateUserAPIMethod} from "../api/client";
+import {updateUserAPIMethod} from "../api/client";
 
-const Profile = ({showProfile, setShowProfile}) =>  {
-    const [profile, setProfile] = useState([]);
+const Profile = ({showProfile, setShowProfile, user, setUser}) =>  {
+    const [profile, setProfile] = useState(user);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [location, setLocation] = useState('');
+
 
    useEffect(()=>{
        setName(profile?.name);
        setEmail(profile?.email);
        setLocation(profile?.location);
-   }, [profile])
+   }, [profile]);
 
-    const onChange = event => {
+    const onChange = (event) => {
         const { value, name } = event.target;
         setProfile({
             ...profile,
             [name]: value
         });
     };
-
-    useEffect(() => {
-        function fetchData() {
-            getUsersAPIMethod().then((res) => {
-                setProfile(res[0]);
-            }).catch((err) => {
-                console.error('Error retrieving note data: ' + err);
-            });
-        };
-        fetchData();
-    }, []);
 
     const handleSave = () => {
         updateUserAPIMethod(profile).then((response) => {
@@ -64,7 +54,7 @@ const Profile = ({showProfile, setShowProfile}) =>  {
     return (
 
         <div id="id01" className="modal" style={{display: showProfile? 'block' : 'none'}}>
-            <form className="modal-content" action="/action_page.php" profile={profile}>
+            <form className="modal-content" action="/action_page.php" user={user}>
                 <div className="container" ref={containerRef}>
                     <MdClose
                         className='close-icons'
