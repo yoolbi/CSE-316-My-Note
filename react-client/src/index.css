@@ -404,3 +404,11 @@ button:hover {
   justify-content: space-between;
   height: 50px;
 }
+
+input[type="file"] {
+  display: none;
+}
+
+.imageEdit {
+  cursor: pointer;
+}

@@ -1,13 +1,12 @@
 import React, {useEffect, useState, useRef} from 'react';
 import {MdClose} from 'react-icons/md';
-import {updateUserAPIMethod} from "../api/client";
+import {updateUserAPIMethod, uploadImageToCloudinaryAPIMethod} from "../api/client";
 
 const Profile = ({showProfile, setShowProfile, user, setUser}) =>  {
     const [profile, setProfile] = useState(user);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [location, setLocation] = useState('');
-
 
    useEffect(()=>{
        setName(profile?.name);
@@ -51,6 +50,39 @@ const Profile = ({showProfile, setShowProfile, user, setUser}) =>  {
         };
     });
 
+    const handleImageSelected = (event) => {
+        console.log("New File Selected");
+        if (event.target.files && event.target.files[0]) {
+            const selectedFile = event.target.files[0];
+            console.dir(selectedFile);
+
+            const formData = new FormData();
+            const unsignedUploadPreset = 'xrvdsh95'
+            formData.append('file', selectedFile);
+            formData.append('upload_preset', unsignedUploadPreset);
+
+            console.log("Cloudinary upload");
+            uploadImageToCloudinaryAPIMethod(formData).then((response) => {
+                console.log("Upload success");
+                console.dir(response);
+
+                // Now the URL gets saved to the author
+                const updatedAuthor = {...profile, "profile_url": response.url};
+                setProfile(updatedAuthor);
+
+                // Now we want to make sure this is updated on the server – either the
+                // user needs to click the submit button, or we could trigger the server call here
+            });
+        }
+    }
+
+    const handleRemoveImage = () => {
+        if (user.profile_url) {
+            let editImage = {...user, profile_url: null};
+            setProfile(editImage);
+        }
+    };
+
     return (
 
         <div id="id01" className="modal" style={{display: showProfile? 'block' : 'none'}}>
@@ -65,11 +97,14 @@ const Profile = ({showProfile, setShowProfile, user, setUser}) =>  {
                     <div className='selectImage'>
                         <img
                             className='editprofile-profile'
-                            src='profile.jpg'
-                            alt=''
+                            src={user.profile_url ? user.profile_url : 'defaultProfile.png'}
+                            alt='profile'
                         />
-                        <div><b>Choose New Image</b></div>
-                        <div><b>Remove Image</b></div>
+                        <label className="imageEdit">
+                            <input type="file" name="profile_url" accept="image/*" id="clooudinary" onChange={handleImageSelected}/>
+                            <b>Choose New Image</b>
+                        </label>
+                        <div className="imageEdit" onClick={handleRemoveImage}><b>Remove Image</b></div>
                     </div>
                     <br/>
                     <label htmlFor="name"><b>Name</b></label>

@@ -1,7 +1,7 @@
 import React from "react";
 import { MdDelete } from "react-icons/md";
 
-const SidebarHeader = ({id, handleShowProfile, handleDeleteNote}) => {
+const SidebarHeader = ({id, handleShowProfile, handleDeleteNote, user}) => {
     const handleProfileClick = () => {
         handleShowProfile(true);
     };
@@ -11,8 +11,8 @@ const SidebarHeader = ({id, handleShowProfile, handleDeleteNote}) => {
             <img
                 onClick={handleProfileClick}
                 className='profile'
-                src='profile.jpg'
-                alt="personal"
+                src={user.profile_url ? user.profile_url : 'defaultProfile.png'}
+                alt="profile"
             />
             <div><b>My Notes</b></div>
             <MdDelete

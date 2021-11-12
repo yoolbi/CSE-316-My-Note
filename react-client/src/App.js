@@ -146,6 +146,7 @@ const App =  () => {
                             id={currentIndex}
                             handleShowProfile={handleShowProfile}
                             handleDeleteNote={deleteNote}
+                            user={user}
                         />
                         <Search handleSearchNote={setSearchText}
                                 searchText={searchText}
