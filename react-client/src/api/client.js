@@ -99,6 +99,15 @@ export const loginUserAPIMethod = (user) => {
         .then(parseJSON);
 }
 
+export const logoutUserAPIMethod = (user) => {
+    return fetch(`/api/logout`, {
+        ...defaultHeaders,
+        method: 'POST', // The method defaults to GET
+        body: JSON.stringify(user),
+    }).then(checkStatus);
+        // .then(parseJSON);
+}
+
 export const uploadFileForUserAPIMethod = (userId, formData) => {
     return fetch(`/api/users/${userId}/file`, {
         // We do NOT want to set the default headers – the formData will automatically set the

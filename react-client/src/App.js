@@ -124,7 +124,7 @@ const App =  () => {
     useEffect(() => {
         getCurrentUserAPIMethod().then((response) => {
             setUser(response);
-        })
+        });
     },[user]);
 
     if (!user) {

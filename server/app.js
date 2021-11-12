@@ -196,7 +196,7 @@ app.post('/api/users', wrapAsync(async function (req, res) {
     res.json(newUser);
 }));
 
-app.get('/api/currentUser', requireLogin, wrapAsync(async function (req, res) {
+app.get('/api/currentUser', wrapAsync(async function (req, res) {
     const user = await User.findById(req.session.userId);
     res.json(user);
 }));

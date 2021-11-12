@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useRef} from 'react';
 import {MdClose} from 'react-icons/md';
-import {updateUserAPIMethod, uploadImageToCloudinaryAPIMethod} from "../api/client";
+import {logoutUserAPIMethod, updateUserAPIMethod, uploadImageToCloudinaryAPIMethod} from "../api/client";
 
 const Profile = ({showProfile, setShowProfile, user, setUser}) =>  {
     const [profile, setProfile] = useState(user);
@@ -83,8 +83,14 @@ const Profile = ({showProfile, setShowProfile, user, setUser}) =>  {
         }
     };
 
-    return (
+    const handleLogout = () => {
+        logoutUserAPIMethod(user).then((response) => {
+            setUser(null);
+            setShowProfile(!showProfile);
+        });
+    };
 
+    return (
         <div id="id01" className="modal" style={{display: showProfile? 'block' : 'none'}}>
             <form className="modal-content" action="/action_page.php" user={user}>
                 <div className="container" ref={containerRef}>
@@ -119,7 +125,7 @@ const Profile = ({showProfile, setShowProfile, user, setUser}) =>  {
                         <button type="button" onClick={handleSave}
                                 className="save">Save
                         </button>
-                        <button type="button" onClick={handleClose}
+                        <button type="button" onClick={handleLogout}
                                 className="logout">
                             <b>Logout</b>
                         </button>
