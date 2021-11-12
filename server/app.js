@@ -88,10 +88,10 @@ app.post('/api/login', wrapAsync(async function (req, res) {
     const user = await User.findAndValidate(email, password);
     if (user) {
         req.session.userId = user._id;
-        res.sendStatus(204);
     } else {
         res.sendStatus(401);
     }
+    res.json(user);
 }));
 
 app.post('/api/logout', wrapAsync(async function (req, res) {
