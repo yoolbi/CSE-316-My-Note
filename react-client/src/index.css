@@ -77,20 +77,15 @@ input {
   }
 
    /*Modal Content/Box*/
-  .modal-content {
+  .modal-content, .modal-content1 {
     background-color: #ffffff;
-    margin: auto auto auto auto;
     border: 1px solid #888;
     width: 480px;
     border-radius: 12px;
-  }
-
-  .modal-content1 {
-    background-color: #ffffff;
-    margin: 5% auto auto auto;
-    border: 1px solid #888;
-    width: 480px;
-    border-radius: 12px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 }
 
@@ -355,14 +350,14 @@ hr {
   background-color: rgba(3, 44, 206, 0.72);
   border-radius: 12px;
   width: 100%;
-  margin: 8px 0 15px 0;
+  margin: 10px 0 15px 0;
 }
 
 .createAccBtn {
   background-color: green;
   border-radius: 12px;
   width: 50%;
-  margin: 15px auto;
+  margin: 15px auto 0px auto;
 }
 
 button:hover {
@@ -383,11 +378,14 @@ button:hover {
   height: 100%;
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .title {
   text-align: center;
-  margin: 50px auto 0 auto;
+  margin: 0 auto 0 auto;
 }
 
 .signupBtn {
@@ -397,5 +395,12 @@ button:hover {
   align-items: center;
   padding: 10px 20px 10px 20px;
   display: block;
-  margin: auto
+  margin: 10px auto;
+}
+
+.signupTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 50px;
 }

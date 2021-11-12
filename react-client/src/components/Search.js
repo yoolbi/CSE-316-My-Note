@@ -3,7 +3,6 @@ import { MdSearch } from 'react-icons/md';
 
 const Search = ({ notes, handleSearchNote, searchText, setCurrentIndex, currentIndex }) => {
     useEffect(() => {
-        console.log(currentIndex, notes);
         // no notes, return
         if (notes.length === 0) {
             return;

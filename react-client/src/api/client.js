@@ -52,6 +52,12 @@ export const getUsersAPIMethod = () => {
         .then(parseJSON);
 }
 
+export const getCurrentUserAPIMethod = () => {
+    return fetch(`/api/currentUser`, {
+        ...defaultHeaders,
+    }).then(checkStatus)
+        .then(parseJSON);
+}
 export const getUserByIdAPIMethod = (userId) => {
     return fetch(`/api/users/${userId}`, {
         ...defaultHeaders,
@@ -76,10 +82,42 @@ export const deleteUserByIdAPIMethod = (userId) => {
 }
 
 export const createUserAPIMethod = (user) => {
-    return fetch(`/api/users`, {
+    return fetch(`/api/register`, {
         ...defaultHeaders,
         method: 'POST', // The method defaults to GET
         body: JSON.stringify(user),
+    }).then(checkStatus)
+        .then(parseJSON);
+}
+
+export const loginUserAPIMethod = (user) => {
+    return fetch(`/api/login`, {
+        ...defaultHeaders,
+        method: 'POST', // The method defaults to GET
+        body: JSON.stringify(user),
+    }).then(checkStatus)
+        .then(parseJSON);
+}
+
+export const uploadFileForUserAPIMethod = (userId, formData) => {
+    return fetch(`/api/users/${userId}/file`, {
+        // We do NOT want to set the default headers – the formData will automatically set the
+        // headers to tell the server of the data type (which is different than the JSON
+        // standard all the other API calls have been sending
+        method: 'POST',
+        body: formData,
+    }).then(checkStatus)
+        .then(parseJSON);
+}
+
+export const uploadImageToCloudinaryAPIMethod = (formData) => {
+    const cloudName = 'yoolbi' // TODO: Write in your own Cloudinary account
+    return fetch(`https://api.cloudinary.com/v1_1/${cloudName}/upload`, {
+        // We do NOT want to set the default headers – the formData will automatically set the
+        // headers to tell the server of the data type (which is different than the JSON
+        // standard all the other API calls have been sending
+        method: 'POST',
+        body: formData,
     }).then(checkStatus)
         .then(parseJSON);
 }
