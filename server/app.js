@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 const sessionSecret = 'make a secret string';
 
 //Set up mongoose connection
-var dbURL = 'mongodb://127.0.0.1:27017/my-notes'; // insert your database URL here
+var dbURL = 'mongodb+srv://yoolbi:yoolbi716@cluster0.mcvce.mongodb.net/local_library?retryWrites=true&w=majority'; // insert your database URL here
 mongoose.connect(dbURL, { useNewUrlParser: true , useUnifiedTopology: true});
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
